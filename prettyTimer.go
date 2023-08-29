@@ -73,3 +73,31 @@ func (t *TimingStats) PrintStats() {
 	// Percentile calculations
 	fmt.Printf(Red+"50th: %s, "+Green+"90th: %s, "+Purple+"99th: %s\n"+Reset, t.CalculatePercentile(50), t.CalculatePercentile(90), t.CalculatePercentile(99))
 }
+
+// Return stats as struct
+type Stats struct {
+	MinTime   time.Duration
+	MaxTime   time.Duration
+	AvgTime   time.Duration
+	Count     int
+	Percent50 time.Duration
+	Percent90 time.Duration
+	Percent99 time.Duration
+}
+
+// Return stats as struct
+func (t *TimingStats) GetStats() Stats {
+	if t.Count == 0 {
+		return Stats{}
+	}
+
+	return Stats{
+		MinTime:   t.MinTime,
+		MaxTime:   t.MaxTime,
+		AvgTime:   t.TotalTime / time.Duration(t.Count),
+		Count:     t.Count,
+		Percent50: t.CalculatePercentile(50),
+		Percent90: t.CalculatePercentile(90),
+		Percent99: t.CalculatePercentile(99),
+	}
+}
