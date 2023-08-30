@@ -13,6 +13,7 @@ type TimingStats struct {
 	MinTime   time.Duration
 	MaxTime   time.Duration
 	Timings   []time.Duration // To keep track of individual timings for percentile calculation
+	startTime time.Time       // To keep track of the time when Start() is called
 }
 
 // Initialize a TimingStats instance with reasonable defaults
@@ -34,6 +35,17 @@ func (t *TimingStats) RecordTiming(duration time.Duration) {
 		t.MaxTime = duration
 	}
 	t.Timings = append(t.Timings, duration)
+}
+
+// Start the timer
+func (t *TimingStats) Start() {
+	t.startTime = time.Now()
+}
+
+// Finish the timer and record the timing
+func (t *TimingStats) Finish() {
+	elapsed := time.Since(t.startTime)
+	t.RecordTiming(elapsed)
 }
 
 // Calculate percentile
