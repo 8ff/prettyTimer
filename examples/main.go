@@ -16,9 +16,10 @@ func main() {
 	ts.Finish()
 
 	// Using RecordTiming to manually record timings
-	ts.RecordTiming(1 * time.Second)
-	ts.RecordTiming(2 * time.Second)
-	ts.RecordTiming(3 * time.Second)
+	start := time.Now()
+	ts.RecordTiming(time.Since(start))
+	ts.RecordTiming(time.Since(start))
+	ts.RecordTiming(time.Since(start))
 
 	// Print stats to console
 	ts.PrintStats()
